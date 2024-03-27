@@ -1,12 +1,4 @@
-import { OrbitControls, useCursor } from "@react-three/drei";
-import { useState } from "react";
-import * as THREE from 'three'
-import { Island } from "./Island";
-import { Water } from "./Water";
-
-import { Parcel } from "./Parcel";
-import { Boat } from "./Boat";
-import { Dock } from "./Dock";
+import { OrbitControls } from "@react-three/drei";
 import { Map01 } from "./Map01";
 
 export const Experience = ({ }) => {

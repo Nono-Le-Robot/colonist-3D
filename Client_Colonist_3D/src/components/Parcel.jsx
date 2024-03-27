@@ -8,7 +8,17 @@ import { Cactus } from './Cactus';
 import { Wood } from './Wood';
 import { Wheat } from './Wheat';
 
-export function Parcel({ position, type, number }) {
+export function Parcel({ position, type, number, diceResult }) {
+
+    useEffect(() => {
+        if (number === diceResult) {
+            alert(type + " + 1")
+        }
+        if (diceResult === 7) alert('Robert')
+    }, [diceResult]);
+
+
+
     let color = ''
 
     switch (type) {
@@ -60,7 +70,7 @@ export function Parcel({ position, type, number }) {
 
     return (
         <group>
-            <mesh castShadow rotation={[Math.PI / 2, 0, 0]} position={position} ref={meshRef}>
+            <mesh castShadow rotation={[Math.PI / 2, 0, 0]} position={[position[0], position[1], position[2]]} ref={meshRef}>
                 <meshStandardMaterial color={color} polygonOffset polygonOffsetFactor={-1} />
                 <extrudeGeometry attach="geometry" args={[shape, extrudeSettings]} />
             </mesh>
@@ -71,7 +81,7 @@ export function Parcel({ position, type, number }) {
                 <extrudeGeometry attach="geometry" args={[shape, extrudeSettings]} />
             </mesh>
             {type !== "desert" && (
-                <Text position={[position[0], 0.22, position[2] - 0.67]} fontWeight={'bold'} color={"black"} scale={0.3} rotation={[Math.PI / 2, Math.PI / 1, 0]}>{number}</Text>
+                <Text position={[position[0], 0.26, position[2] - 0.67]} fontWeight={'bold'} color={diceResult === number ? "white" : "black"} scale={0.3} rotation={[Math.PI / 2, Math.PI / 1, 0]}>{number}</Text>
             )}
 
             {type === 'food' && (

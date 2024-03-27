@@ -1,5 +1,5 @@
-import { OrbitControls, useCursor } from "@react-three/drei";
-import { useEffect, useState } from "react";
+import { OrbitControls, Text, useCursor } from "@react-three/drei";
+import { useContext, useEffect, useState } from "react";
 import * as THREE from 'three'
 import { Island } from "./Island";
 import { Water } from "./Water";
@@ -7,8 +7,11 @@ import { Water } from "./Water";
 import { Parcel } from "./Parcel";
 import { Boat } from "./Boat";
 import { Dock } from "./Dock";
+import { DiceContext } from "../hooks/useDice";
 
 export const Map01 = ({ }) => {
+
+
 
     const types = [{ type: "wood", number: 4 }, { type: "food", number: 4 }, { type: "stone", number: 3 }, { type: "brick", number: 3 }, { type: "wheat", number: 4 }, { type: "desert", number: 1 }]; // add brick and desert
     const [parcels, setParcels] = useState([])
@@ -53,11 +56,21 @@ export const Map01 = ({ }) => {
     }, []);
 
 
-
-
-
     const [number, setNumber] = useState(null);
     const [numberAlreadyDisplay, setNumberAlreadyDisplay] = useState([]);
+    const [diceOneNumber, setDiceOneNumber] = useState(0)
+    const [diceTwoNumber, setDiceTwoNumber] = useState(0)
+    const [rollDiceResult, setRollDiceResult] = useState(0)
+
+    const rollDice = () => {
+        const newDiceOneNumber = Math.floor(Math.random() * (6 - 1 + 1)) + 1;
+        const newDiceTwoNumber = Math.floor(Math.random() * (6 - 1 + 1)) + 1;
+        const diceResult = newDiceOneNumber + newDiceTwoNumber
+        setDiceOneNumber(newDiceOneNumber);
+        setDiceTwoNumber(newDiceTwoNumber);
+        setRollDiceResult(diceResult);
+        console.log(diceResult);
+    }
 
 
     useEffect(() => {
@@ -69,8 +82,6 @@ export const Map01 = ({ }) => {
             }
             temp.push(generatedNumber)
         }
-        console.clear()
-        console.log(temp)
         setNumberAlreadyDisplay(temp);
     }, [])
 
@@ -90,7 +101,7 @@ export const Map01 = ({ }) => {
 
     return (
         <>
-
+            <Text onClick={rollDice} position={[0, 6.2, 0]} fontWeight={'bold'} color={"black"} scale={1} rotation={[Math.PI / 6, Math.PI / 1, 0]}>{diceOneNumber} + {diceTwoNumber} = {rollDiceResult}</Text>
             <Water rotation={[Math.PI / 2, 0, 0]} position={[0, -0.3, 0]} color={"#4ff9ff"} />
             <Island rotation={[Math.PI / 2, 0, 0]} position={[0, 0, 0]} color={"#72ff4f"} />
             {/* {Boats} */}
@@ -102,7 +113,7 @@ export const Map01 = ({ }) => {
             <Dock position={[-6.8, 0, 0]} rotation={[Math.PI / 2, Math.PI / 1, Math.PI / -1.6]} />
             {/* {Parcel} */}
             {parcels.map((parcel, index) => (
-                <Parcel key={index} position={parcel.position} type={parcel.type} number={numberAlreadyDisplay[index]} />
+                <Parcel key={index} position={parcel.position} type={parcel.type} number={numberAlreadyDisplay[index]} diceResult={rollDiceResult} />
             ))}
         </>
     );
