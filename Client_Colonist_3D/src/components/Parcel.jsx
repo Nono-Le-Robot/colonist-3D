@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Decal, Text, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import { Sheep } from './Sheep';
@@ -8,8 +8,9 @@ import { Cactus } from './Cactus';
 import { Wood } from './Wood';
 import { Wheat } from './Wheat';
 
-export function Parcel({ position, type, }) {
+export function Parcel({ position, type, number }) {
     let color = ''
+
     switch (type) {
         case 'wood':
             color = '#7bff61'
@@ -33,6 +34,7 @@ export function Parcel({ position, type, }) {
     const meshRef = useRef();
     const sheep1Ref = useRef();
 
+
     const texture = useTexture(`/textures/${type}.png`);
 
     const ringGeometry = new THREE.RingGeometry(0, 1, 6);
@@ -48,6 +50,8 @@ export function Parcel({ position, type, }) {
             }
         }
     });
+
+
 
     const extrudeSettings = {
         depth: 0.4,
@@ -66,7 +70,9 @@ export function Parcel({ position, type, }) {
                 </Decal>
                 <extrudeGeometry attach="geometry" args={[shape, extrudeSettings]} />
             </mesh>
-            {/* <Text position={[position[0], position[1] + 0.06, position[2] - 0.73]} fontWeight={'bold'} color={"black"} scale={0.3} rotation={[Math.PI / 2, Math.PI / 1, 0]}>{number}</Text> */}
+            {type !== "desert" && (
+                <Text position={[position[0], 0.22, position[2] - 0.67]} fontWeight={'bold'} color={"black"} scale={0.3} rotation={[Math.PI / 2, Math.PI / 1, 0]}>{number}</Text>
+            )}
 
             {type === 'food' && (
 

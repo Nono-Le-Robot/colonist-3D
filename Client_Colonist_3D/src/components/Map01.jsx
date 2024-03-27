@@ -52,6 +52,28 @@ export const Map01 = ({ }) => {
         setParcels(temp)
     }, []);
 
+
+
+
+
+    const [number, setNumber] = useState(null);
+    const [numberAlreadyDisplay, setNumberAlreadyDisplay] = useState([]);
+
+
+    useEffect(() => {
+        let temp = []
+        for (let index = 0; index < 19; index++) {
+            let generatedNumber = Math.floor(Math.random() * (12 - 2 + 1)) + 2;
+            while (temp.includes(generatedNumber) && temp.length < 10 || generatedNumber === 7) {
+                generatedNumber = Math.floor(Math.random() * (12 - 2 + 1)) + 2;
+            }
+            temp.push(generatedNumber)
+        }
+        console.clear()
+        console.log(temp)
+        setNumberAlreadyDisplay(temp);
+    }, [])
+
     const ringGeometry = new THREE.RingGeometry(1, 5, 32);
     const shape = new THREE.Shape();
     ringGeometry.attributes.position.array.forEach((vertex, index) => {
@@ -80,7 +102,7 @@ export const Map01 = ({ }) => {
             <Dock position={[-6.8, 0, 0]} rotation={[Math.PI / 2, Math.PI / 1, Math.PI / -1.6]} />
             {/* {Parcel} */}
             {parcels.map((parcel, index) => (
-                <Parcel key={index} position={parcel.position} type={parcel.type} />
+                <Parcel key={index} position={parcel.position} type={parcel.type} number={numberAlreadyDisplay[index]} />
             ))}
         </>
     );
